@@ -1,0 +1,25 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="gsdk11"
+run/main_scene="res://addons/SolanaSDK/Demos/_LoginDemo/LoginScene.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SceneLoader="*res://addons/SolanaSDK/Autoload/SceneLoader.tscn"
+SolanaService="*res://addons/SolanaSDK/Autoload/SolanaService.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SolanaSDK/plugin.cfg")

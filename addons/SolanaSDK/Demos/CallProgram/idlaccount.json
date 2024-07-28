@@ -1,0 +1,108 @@
+{
+  "version": "0.1.0",
+  "name": "account_voter",
+  "instructions": [
+	{
+	  "name": "initialize",
+	  "accounts": [
+		{
+		  "name": "newAccount",
+		  "isMut": true,
+		  "isSigner": false,
+		  "pda": {
+			"seeds": [
+			  {
+				"kind": "const",
+				"type": "string",
+				"value": "accountVoter"
+			  },
+			  {
+				"kind": "account",
+				"type": "publicKey",
+				"path": "signer"
+			  }
+			]
+		  }
+		},
+		{
+		  "name": "signer",
+		  "isMut": true,
+		  "isSigner": true
+		},
+		{
+		  "name": "systemProgram",
+		  "isMut": false,
+		  "isSigner": false
+		}
+	  ],
+	  "args": [
+		{
+		  "name": "pseudo",
+		  "type": "string"
+		},
+		{
+		  "name": "mail",
+		  "type": "string"
+		},
+		{
+		  "name": "balanceTotal",
+		  "type": "u16"
+		},
+		{
+		  "name": "balanceSol",
+		  "type": "u16"
+		},
+		{
+		  "name": "totalTrade",
+		  "type": "u16"
+		},
+		{
+		  "name": "totalParticipation",
+		  "type": "u16"
+		},
+		{
+		  "name": "winTrade",
+		  "type": "u16"
+		}
+	  ]
+	}
+  ],
+  "accounts": [
+	{
+	  "name": "NewAccount",
+	  "type": {
+		"kind": "struct",
+		"fields": [
+		  {
+			"name": "pseudo",
+			"type": "string"
+		  },
+		  {
+			"name": "mail",
+			"type": "string"
+		  },
+		  {
+			"name": "balanceTotal",
+			"type": "u16"
+		  },
+		  {
+			"name": "balanceSol",
+			"type": "u16"
+		  },
+		  {
+			"name": "totalTrade",
+			"type": "u16"
+		  },
+		  {
+			"name": "totalParticipation",
+			"type": "u16"
+		  },
+		  {
+			"name": "winTrade",
+			"type": "u16"
+		  }
+		]
+	  }
+	}
+  ]
+}
