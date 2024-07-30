@@ -9,7 +9,7 @@
 
 [node name="SolanaService" type="Node"]
 script = ExtResource("1_hwc3u")
-devnet_rpc = "https://api.devnet.solana.com"
+rpc_cluster = 1
 
 [node name="TransactionProcessor" type="Node" parent="."]
 script = ExtResource("2_v3adq")

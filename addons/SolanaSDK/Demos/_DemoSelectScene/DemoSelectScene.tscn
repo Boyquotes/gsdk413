@@ -48,6 +48,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+rotation = 0.00394753
 script = SubResource("GDScript_syc7x")
 
 [node name="Background" type="Panel" parent="."]
@@ -139,6 +140,7 @@ popup/item_0/id = 0
 popup/item_1/text = "Devnet"
 popup/item_1/id = 1
 script = ExtResource("3_lb3d3")
+metadata/_edit_group_ = true
 
 [node name="DemoContainerPanel" type="PanelContainer" parent="."]
 layout_mode = 1

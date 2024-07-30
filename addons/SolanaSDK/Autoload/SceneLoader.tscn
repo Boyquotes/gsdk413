@@ -11,7 +11,6 @@ script = ExtResource("1_8u5j2")
 
 [node name="LoadingCanvas" type="CanvasLayer" parent="."]
 layer = 99
-visible = false
 
 [node name="LoadingPanel" type="Panel" parent="LoadingCanvas"]
 offset_right = 1152.0

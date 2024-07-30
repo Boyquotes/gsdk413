@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://0c0mp6xfci3o"]
+[gd_scene load_steps=32 format=3 uid="uid://0c0mp6xfci3o"]
 
 [ext_resource type="Script" path="res://addons/SolanaSDK/Demos/Tiny Adventure/tiny_adventure.gd" id="1_y05p6"]
 [ext_resource type="PackedScene" uid="uid://blmw46he11fxs" path="res://addons/SolanaSDK/Scripts/TransactionProcessor/TransactionOverlayUI.tscn" id="2_qy64n"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://addons/SolanaSDK/Scripts/Utility/scene_change_button.gd" id="16_kw7jb"]
 [ext_resource type="JSON" path="res://addons/SolanaSDK/Demos/Tiny Adventure/tiny_adventure_idl.json" id="17_javox"]
 [ext_resource type="JSON" path="res://addons/SolanaSDK/Demos/CallProgram/idlaccount.json" id="18_okoy5"]
+[ext_resource type="JSON" path="res://addons/SolanaSDK/Demos/CallProgram/idlaccounvoterlight.json" id="19_0tsj1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pi32"]
 bg_color = Color(0.937255, 0.682353, 0.341176, 1)
@@ -53,23 +54,27 @@ texture = ExtResource("9_jk8cw")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0xvq3"]
 
-[node name="CallProgramDemo" type="Control" node_paths=PackedStringArray("start_button", "start_account_button", "player", "chest", "prize_label", "step_blocks", "left_button", "right_button", "in_game_balance")]
+[node name="CallProgramDemo" type="Control" node_paths=PackedStringArray("start_button", "start_account_button", "player", "chest", "prize_label", "left_button", "right_button", "in_game_balance")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 3.0
+offset_right = -2.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_y05p6")
 tiny_adventure_pid = "F3PjdY1TiKYqGqRaBHXcXSNqAW8FtjF9SCKrSth5V6DK"
 account_voter_pid = "CAjif8p66ekjjRxwGeZxEUGr19Q34cCUSv8ShDFH1cYe"
+account_voter_light_pid = "HKUv1rTwUWxKTZp4FQ2cPfQsmQvfGxVAvPXRceE2nnkT"
 start_button = NodePath("StartingScreen/StartAccountButton")
 start_account_button = NodePath("StartingScreen/StartAccountButton")
 player = NodePath("GameScreen/Block0/Player")
 chest = NodePath("GameScreen/Block3/Chest")
 chest_prize = 0.01
 prize_label = NodePath("GameScreen/Block3/Chest/Prize")
-step_blocks = [NodePath("GameScreen/Block0"), NodePath("GameScreen/Block1"), NodePath("GameScreen/Block2"), NodePath("GameScreen/Block3")]
 left_button = NodePath("GameScreen/LeftButton")
 right_button = NodePath("GameScreen/RightButton")
 in_game_balance = NodePath("GameScreen/SolBalance2")
@@ -95,7 +100,7 @@ offset_right = 955.0
 offset_bottom = 176.0
 theme_override_fonts/font = ExtResource("3_4jhny")
 theme_override_font_sizes/font_size = 85
-text = "Tiny Adventure"
+text = "Call account"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -110,6 +115,7 @@ theme_override_font_sizes/font_size = 23
 text = "Simple onchain adventure game. Move a character left and right on a path, try to reach a chest and claim the stashed SOL To begin, initialize a new game and send some SOL, which will be the reward of the chest. Caution: Devnet Only!"
 horizontal_alignment = 1
 autowrap_mode = 2
+metadata/_edit_group_ = true
 
 [node name="BalanceLabel" type="Label" parent="StartingScreen"]
 layout_mode = 0
@@ -578,6 +584,44 @@ idl = {
 "name": "moveLeft"
 }],
 "name": "tiny_adventure",
+"version": "0.1.0"
+}
+
+[node name="AnchorProgram3" type="AnchorProgram" parent="."]
+pid = "HKUv1rTwUWxKTZp4FQ2cPfQsmQvfGxVAvPXRceE2nnkT"
+json_file = ExtResource("19_0tsj1")
+idl = {
+"accounts": [{
+"name": "NewAccount",
+"type": {
+"fields": [{
+"name": "pseudo",
+"type": "string"
+}],
+"kind": "struct"
+}
+}],
+"instructions": [{
+"accounts": [{
+"isMut": true,
+"isSigner": false,
+"name": "newAccount"
+}, {
+"isMut": true,
+"isSigner": true,
+"name": "signer"
+}, {
+"isMut": false,
+"isSigner": false,
+"name": "systemProgram"
+}],
+"args": [{
+"name": "pseudo",
+"type": "string"
+}],
+"name": "initialize"
+}],
+"name": "account_voter",
 "version": "0.1.0"
 }
 

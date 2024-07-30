@@ -52,7 +52,7 @@ texture = ExtResource("11_0107k")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0xvq3"]
 
-[node name="TinyAdventureDemo" type="Control" node_paths=PackedStringArray("start_button", "player", "chest", "prize_label", "step_blocks", "left_button", "right_button", "in_game_balance")]
+[node name="TinyAdventureDemo" type="Control" node_paths=PackedStringArray("start_button", "player", "chest", "prize_label", "left_button", "right_button", "in_game_balance")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,7 +66,6 @@ player = NodePath("GameScreen/Block0/Player")
 chest = NodePath("GameScreen/Block3/Chest")
 chest_prize = 0.01
 prize_label = NodePath("GameScreen/Block3/Chest/Prize")
-step_blocks = [NodePath("GameScreen/Block0"), NodePath("GameScreen/Block1"), NodePath("GameScreen/Block2"), NodePath("GameScreen/Block3")]
 left_button = NodePath("GameScreen/LeftButton")
 right_button = NodePath("GameScreen/RightButton")
 in_game_balance = NodePath("GameScreen/SolBalance2")

@@ -46,7 +46,7 @@ func set_rpc_cluster(new_cluster:RpcCluster)->void:
 func spawn_client_instance()->SolanaClient:
 	var sol_client:SolanaClient = SolanaClient.new()
 	add_child(sol_client)
-	sol_client.url_override = active_rpc
+#	sol_client.url_override = active_rpc
 	return sol_client
 	
 	
