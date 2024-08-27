@@ -12,7 +12,7 @@ config_version=5
 
 config/name="gsdk11"
 run/main_scene="res://addons/SolanaSDK/Demos/_LoginDemo/LoginScene.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -23,3 +23,7 @@ SolanaService="*res://addons/SolanaSDK/Autoload/SolanaService.tscn"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/SolanaSDK/plugin.cfg")
+
+[solana_sdk]
+
+client/default_url="https://devnet.sonic.game"

@@ -67,6 +67,7 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 141.0
 script = ExtResource("1_p5vq2")
+balance_token_address = "BB5MeRhwYd9z3v7Z8Pu7qjGqvypcfT8guNKewjcZsSBB"
 
 [node name="AccountLabel" type="Label" parent="AccountPanel"]
 layout_mode = 1

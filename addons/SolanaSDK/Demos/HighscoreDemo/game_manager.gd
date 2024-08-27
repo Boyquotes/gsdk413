@@ -25,17 +25,42 @@ extends Node
 var game_auth:Keypair
 
 var player_score:int
-
+#
+##devnet Game account, created once using setup_game function
+#var game_address:String = "5XSs9TZRasg3k6dJLo1fKko3gtc749KNgUoj9mCqRF26"
+##devned leaderboard No.1 created from the game. Players can submit their scores to it
+#var leaderboard_address:String = "9ztUqAyKPvPUmTAiopEZcc4QGghMvuM9oURixDQCgGcK"
+##collection used as nft_meta for games and leaderboards. this is devnet Rubians
+#var nft_collection:String = "EE1XTVRxVX5UtTLKRg7Y5bFQEKm2wm2nao9SGF27fypH"
+#
+#GAME : 
+#```
+#G7u24f4yt7RE4L433BNsLJGNMNL96tg5Z2djqP8gwDsD
+#```
+#NFT : 
+#```
+#DvKdLRE6JZXCbAhch23w4ruC79Dw4qrNEsZeg6NWPMbR
+#```
+#LEADERBOARD1 = 
+#```
+#9h8PyNruzEMKY4qpqdboWbAYJGchitSyQv3j1tUk4bfz
+#```
+#NFT META : 
+#```
+#59FEh4iHBR29rCaw4UB6myVKeMzT4CXn3LrKaCFurLk2
+#```
 #devnet Game account, created once using setup_game function
-var game_address:String = "5XSs9TZRasg3k6dJLo1fKko3gtc749KNgUoj9mCqRF26"
+var game_address:String = "Erk1ZAwYcA3T7wLukXD4kNKA72xC7JPPPrftHeBPao6C"
 #devned leaderboard No.1 created from the game. Players can submit their scores to it
-var leaderboard_address:String = "9ztUqAyKPvPUmTAiopEZcc4QGghMvuM9oURixDQCgGcK"
+var leaderboard_address:String = "jhSeKRGb3dRdkLJ5uH391escyZ27XgvrZn7i21fyVqq"
 #collection used as nft_meta for games and leaderboards. this is devnet Rubians
-var nft_collection:String = "EE1XTVRxVX5UtTLKRg7Y5bFQEKm2wm2nao9SGF27fypH"
+var nft_collection:String = "2cUq4VCC4UfDgguE1LLDuXQZaYoABEUTm1LDdUQjKz2R"
+
+
+#var _auths = auths.map((keypair) => keypair.publicKey);
 
 func _ready() -> void:
 	SceneLoader.emit_signal("scene_loaded")
-	
 	start_game_button.pressed.connect(start_game)
 	submit_score_button.pressed.connect(submit_score)
 	leaderboard_button.pressed.connect(show_leaderboard)
@@ -52,10 +77,15 @@ func _process(delta: float) -> void:
 func start_game() -> void:
 	#check if this wallet is initialized as a player in SOAR program
 	#if not, initialize and then start
-	
-	var player_data:Dictionary = await soar_program.fetch_player_data(SolanaService.wallet.get_pubkey())
-	if player_data.size()==0:
-		await initialize_player()
+	print("start")
+	await register_leaderboard()
+	#await initialize_game()
+	#await setup_game()
+
+	#var player_data:Dictionary = await soar_program.fetch_player_data(SolanaService.wallet.get_pubkey())
+	#if player_data.size()==0:
+		#print("init")
+		#await initialize_player()
 		
 	play()
 		
@@ -68,8 +98,8 @@ func play() -> void:
 	
 func setup_game() -> void:
 	var game_attributes:SoarUtils.GameAttributes = SoarUtils.GameAttributes.new()
-	game_attributes.title="Dev Game"
-	game_attributes.description="Best Game ever by Zen Republic"
+	game_attributes.title="Dev Game2"
+	game_attributes.description="Best Game ever by Zen Republic2"
 	#game's collection nft. Rubians provided by default
 	game_attributes.nft_meta = Pubkey.new_from_string(nft_collection)
 	
@@ -77,6 +107,7 @@ func setup_game() -> void:
 
 
 func register_leaderboard() -> void:
+	print("Register leaderboard")
 	var leaderboard_data:SoarUtils.LeaderboardData = SoarUtils.LeaderboardData.new()
 	leaderboard_data.description="Mega leaderboard win big in 24 hours!"
 	leaderboard_data.nft_meta = Pubkey.new_from_string(nft_collection)
@@ -104,7 +135,30 @@ func initialize_player() -> void:
 	
 	var tx_id:String = await soar_program.initialize_player(username,user_nft)
 	#soar_program.update_player(username,user_nft)
+
+func initialize_game() -> void:
+	var gameKeypair:Keypair = SolanaService.generate_keypair(true);
+	#var game:Pubkey = gameKeypair['publicKey'];
+	var title:String = "Game1";
+	var description:String = "Description";
+	var genre:String = "Rpg";
+	var gameType:String = "Mobile"; 
+	var nftMetaKeypair:Keypair = SolanaService.generate_keypair(true);
+	var nftMeta:Pubkey = Pubkey.new_from_string(nftMetaKeypair.get_public_string());
+	print("nftMeta")
+	print(nftMetaKeypair.get_public_string())
+	print(nftMeta)
+	print("game")
+	print(gameKeypair.get_public_string())
+	print(gameKeypair.get_private_string())
+	print(gameKeypair.to_string())
+	#print(game)
+	#var username:String = "Pokemon Go"
+	##devnet rubian nft example
+	#var user_nft:Pubkey = Pubkey.new_from_string("9aNFiE6mdcQSGaytpoqpWvJMeA2h6vDa4sJttsyyKFPA")
 	
+	var tx_id:String = await soar_program.initialize_game(gameKeypair,title,description,genre,gameType,nftMeta)
+
 func submit_score() -> void:
 	var game_account:Pubkey = Pubkey.new_from_string(game_address)
 	var leaderboard_account:Pubkey = Pubkey.new_from_string(leaderboard_address)

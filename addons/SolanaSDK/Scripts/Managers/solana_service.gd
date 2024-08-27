@@ -51,9 +51,11 @@ func spawn_client_instance()->SolanaClient:
 	
 	
 func get_sol_balance(address_to_check:String) -> float:
+	print(address_to_check)
 	var client:SolanaClient = spawn_client_instance()
 	var response_dict:Dictionary = client.get_balance(address_to_check)
 	response_dict = await client.http_response_received
+	print("response_dict", response_dict)
 	client.queue_free()
 	var balance = response_dict["result"]["value"] / 1000000000
 	return balance
@@ -98,10 +100,27 @@ func get_associated_token_account(address_to_check:String,token_address:String) 
 	
 func get_wallet_tokens(wallet_address:String) -> Array[Pubkey]:
 	var client:SolanaClient = spawn_client_instance()
-	var response_dict:Dictionary = client.get_token_accounts_by_owner(wallet_address,"",token_pid)
+	print("client",client.to_string())
+	print("client",client.url_override)
+	#var address_to_check = "GxuNiBRtUeZmMpWVVtVoLYWkEf7qjhSveXBEKhzyZaCV"
+	var address_to_check = "H2Sd3kd5ZqYNJor7PFJ9iD3jJDbvLQHDtc5kyhANspez"
+	#var ball = await client.get_balance("GxuNiBRtUeZmMpWVVtVoLYWkEf7qjhSveXBEKhzyZaCV")
+	#var response_dict2:Dictionary = client.get_balance(address_to_check)
+	#response_dict2 = await client.http_response_received
+	##client.queue_free()
+	#var balance = response_dict2["result"]["value"] / 1000000000
+	#print(ball)
+	#print(wallet_address)
+	#response_dict2 = await client.http_response_received
+	#print(response_dict2)
+	#var response_dict:Dictionary = await client.get_token_accounts_by_owner("BB5MeRhwYd9z3v7Z8Pu7qjGqvypcfT8guNKewjcZsSBB","3inCY4b1c3LgRL8rEgJZwu7Ex9QyYvYTauUur9yJ5Zzm",token_pid)
+	#var response_dict:Dictionary = await client.get_token_accounts_by_owner("BB5MeRhwYd9z3v7Z8Pu7qjGqvypcfT8guNKewjcZsSBB","",token_pid)
+	var response_dict:Dictionary = await client.get_token_accounts_by_owner("H2Sd3kd5ZqYNJor7PFJ9iD3jJDbvLQHDtc5kyhANspez","CuaKjcgn72RoWjRjNK5oWrM9MomvU2fseahseLgaFfAC",token_pid)
+	#response_dict = await client.http_response_received
+	print(response_dict)
+	#client.queue_free()
 	response_dict = await client.http_response_received
-	client.queue_free()
-
+	print("response_dict " ,response_dict["result"])
 	var wallet_tokens:Array[Pubkey]
 	for token in response_dict["result"]["value"]:
 		var token_byte_data = SolanaUtils.bs64_decode(token["account"]["data"][0])
@@ -111,7 +130,7 @@ func get_wallet_tokens(wallet_address:String) -> Array[Pubkey]:
 		if token_data["amount"] == 0:
 			continue
 		wallet_tokens.append(Pubkey.new_from_string(token_data["mint"]))
-	
+	print(wallet_tokens)
 	return wallet_tokens
 	
 func parse_token_data(data: PackedByteArray) -> Dictionary:

@@ -10,6 +10,13 @@ var displayables:Array[DisplayableNFT]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print("ready")
+	#print(SolanaService.wallet.get_pubkey().to_string())
+	#SolanaService.nft_manager.load_nfts()
+	#print(SolanaService.rpc_cluster)
+	#print(SolanaService.nft_manager.nfts_loaded)
+	#print(SolanaService.nft_manager.owned_nfts)
+	#SolanaService.nft_manager.load_nfts()
 	if !SolanaService.nft_manager.nfts_loaded:
 		SolanaService.nft_manager.connect("on_nft_loaded",add_to_list)
 		SolanaService.nft_manager.connect("on_nft_load_finished",nft_load_finished)
@@ -24,6 +31,7 @@ func _ready() -> void:
 
 
 func setup(nfts:Array[Nft],clear_previous:bool=false) -> void:
+	print(nfts)
 	if clear_previous && displayables.size()!=null:
 		clear_display()
 	
@@ -31,11 +39,12 @@ func setup(nfts:Array[Nft],clear_previous:bool=false) -> void:
 		no_nft_overlay.visible = (nfts.size()==0)
 	if nfts.size()==0:
 		return
-		
+
 	for nft in nfts:
 		add_to_list(nft)
 		
 func add_to_list(nft:Nft) -> void:
+	print("ADD NFT", nft)
 	var pass_collection_filter= (collection_filter.size()==0)
 	for collection in collection_filter:
 		if collection.belongs_to_collection(nft):

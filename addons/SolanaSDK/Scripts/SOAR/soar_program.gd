@@ -24,6 +24,8 @@ func get_pid() -> Pubkey:
 		
 func fetch_game_data(game_account:Pubkey) -> Dictionary:
 	var instance:AnchorProgram = spawn_anchor_program_instance()
+	print("instance")
+	#print(instance.get_idl())
 	instance.fetch_account("Game",game_account)
 	var result:Dictionary = await instance.account_fetched
 	return result
@@ -63,28 +65,40 @@ func fetch_player_scores(user_account:Pubkey,leaderboard_account:Pubkey) -> Dict
 	return result
 
 func init_game(game_attributes:SoarUtils.GameAttributes) -> String:
-	var game_account:Keypair = SolanaService.generate_keypair()
+	var game_account2:Keypair = SolanaService.generate_keypair()
+	print("keypair")
+	print(game_account2.get_public_string())
+	print(SolanaService.wallet.get_pubkey().to_string())
+	print(soar_program.get_pid())
+	print(soar_program.get_idl())
+	print(game_attributes.get_value())
 	var instructions:Array[Instruction]
 	var init_game_ix:Instruction = soar_program.build_instruction("initializeGame",[
 		SolanaService.wallet.get_kp(), #creator
-		game_account, #game
+		game_account2, #game
 		Pubkey.new_from_string("11111111111111111111111111111111") #system program
 	],{
 		"GameMeta":game_attributes.get_value(),
 		"GameAuth":[SolanaService.wallet.get_pubkey()]
 	})
-	
-	print("Creating Game Account with ID: %s"%game_account.get_public_string())
+	print(init_game_ix)
+	print("Creating Game Account with ID: %s"%game_account2.get_public_string())
 	instructions.append(init_game_ix)
+	print(instructions)
 	var tx_id:String = await SolanaService.transaction_processor.sign_transaction(SolanaService.wallet.get_kp(),instructions,"finalized")
 	return tx_id
 		
 
 	
 func add_leaderboard(game_address:String,leaderboard_data:SoarUtils.LeaderboardData,game_auth:Keypair) -> String:
+	print("Fetch game data")
+	print(game_address)
 	var game_account:Pubkey=Pubkey.new_from_string(game_address)
-	var game_data:Dictionary = await fetch_game_data(game_account)
-	
+	print(game_account)
+	var game_account_zen:Pubkey=Pubkey.new_from_string("5XSs9TZRasg3k6dJLo1fKko3gtc749KNgUoj9mCqRF26")
+	print(game_account_zen)
+	var game_data:Dictionary = await fetch_game_data(game_account_zen)
+	print(game_data)
 	if game_data.size() == 0:
 		push_error("Failed to fetch the game data")
 		return ""
@@ -136,10 +150,40 @@ func update_leaderboard(game_address:String,leaderboard_address:String,leaderboa
 	instructions.append(update_leaderboard_ix)
 	var tx_id:String = await SolanaService.transaction_processor.sign_transaction(SolanaService.wallet.get_kp(),instructions,"finalized")
 	return tx_id
+var game:Keypair = SolanaService.generate_keypair(true)
+var title = "Game1";
+var description = "Description";
+var genre = "Rpg";
+var gameType = "Mobile"; 
+var nftMeta = SolanaService.generate_keypair(true);
+func initialize_game(game:Keypair, title:String, description:String, genre:String, gameType:String, nftMeta:Pubkey ) -> String:
+	print("initialize_game")
+	var instructions:Array[Instruction]
+	var init_game_ix:Instruction = soar_program.build_instruction("initializeGame",[
+		SolanaService.wallet.get_kp(), #payer
+		SolanaService.wallet.get_kp(), #user
+		SystemProgram.get_pid() #system program
+	],{
+		"game":game,
+		"title":title,
+		"description":description,
+		"genre":genre,
+		"gameType":gameType,
+		"nftMeta":nftMeta,
+	})
+	instructions.append(init_game_ix)
+	var tx_id:String = await SolanaService.transaction_processor.sign_transaction(SolanaService.wallet.get_kp(),instructions,"finalized")
+	return tx_id
 	
-
 func initialize_player(username:String, user_nft:Pubkey) -> String:
+	print("initialize_player")
 	var player_account:Pubkey = SoarPDA.get_player_pda(SolanaService.wallet.get_pubkey(),get_pid())
+	print(player_account.to_string())
+	print(SolanaService.wallet.get_kp().to_string())
+	print(SolanaService.wallet.get_kp())
+	print(SolanaService.wallet.get_pubkey().to_string())
+	print(username)
+	print(user_nft.to_string())
 	var instructions:Array[Instruction]
 	var init_player_ix:Instruction = soar_program.build_instruction("initializePlayer",[
 		SolanaService.wallet.get_kp(), #payer
@@ -151,7 +195,7 @@ func initialize_player(username:String, user_nft:Pubkey) -> String:
 		"nftMeta":user_nft
 	})
 	
-	print("Initializing Player account with ID: %s"%player_account.get_value())
+	#print("Initializing Player account with ID: %s"%player_account.get_value())
 	instructions.append(init_player_ix)
 	var tx_id:String = await SolanaService.transaction_processor.sign_transaction(SolanaService.wallet.get_kp(),instructions,"finalized")
 	return tx_id

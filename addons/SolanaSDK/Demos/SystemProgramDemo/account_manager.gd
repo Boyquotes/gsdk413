@@ -4,11 +4,13 @@ extends Node
 @export var balance_visualizer:TokenVisualizer
 
 @onready var account_address:Label = $AccountAddress
-@onready var balance_label:Label = $Balance
+@onready var balance_label:Label = %Balance
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var wallet_address = SolanaService.wallet.get_pubkey().to_string()
+	#var wallet_address = SolanaService.wallet.get_pubkey().to_string()
+	var wallet_address = "H2Sd3kd5ZqYNJor7PFJ9iD3jJDbvLQHDtc5kyhANspez"
+	#var wallet_address = "GxuNiBRtUeZmMpWVVtVoLYWkEf7qjhSveXBEKhzyZaCV2"
 	account_address.text = wallet_address
 	
 	if balance_visualizer!=null:
